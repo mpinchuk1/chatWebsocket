@@ -1,6 +1,6 @@
 let $chatHistory;
 let $button;
-let $loginButton;
+//let $loginButton;
 let $showUserDataButton;
 let $saveUserDataButton;
 let $logoutButton;
@@ -15,7 +15,7 @@ function init() {
 
 function bindEvents() {
     $button.on('click', addMessage.bind(this));
-    $loginButton.on('click', loginUser.bind(this));
+    //$loginButton.on('click', loginUser.bind(this));
     $logoutButton.on('click', logoutUser.bind(this));
     $textarea.on('keyup', addMessageEnter.bind(this));
     $showUserDataButton.on('click', showUserData.bind(this));
@@ -25,7 +25,7 @@ function bindEvents() {
 function cacheDOM() {
     $chatHistory = $('.chat-history');
     $button = $('#sendBtn');
-    $loginButton = $('#loginButton');
+    //$loginButton = $('#loginButton');
     $logoutButton = $('#logoutButton');
     $showUserDataButton = $('#showUserData');
     $saveUserDataButton = $('#saveUserData');

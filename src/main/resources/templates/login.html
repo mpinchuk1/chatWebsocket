@@ -15,16 +15,16 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<div align="center">
+<div class="login-form" align="center">
 
-    <form action="/j_spring_security_check" method="POST">
-        Login:<br/><input type="text" id="log" name="j_login"><br/>
-        Password:<br/><input type="password" id="pas" name="j_password"><br/>
-        <input type="submit" onclick="validate()"  value="Login" />
+    <div class="login_fields">
+        <br/>Login:<input type="text" id="log" name="j_login"><br/>
+        <br/>Password:<input type="password" id="pas" name="j_password"><br/>
+    </div>
+    <button id="loginButton" >Login</button>
 
-        <p><a href="/register">Register new user</a></p>
+    <p id="register-link"><a href="/register">Register new user</a></p>
 
-    </form>
 </div>
 <script src="js/login.js"></script>
 </body>
