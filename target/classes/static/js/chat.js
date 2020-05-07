@@ -32,7 +32,7 @@ function connectToChat(user) {
         stompClient.subscribe("/topic/messages/" + user.login, function (response) {
             let data = JSON.parse(response.body);
             if (selectedUser === data.sender) {
-                render(data.message, data.sender);
+                render(data.content, data.sender);
             } else {
                 newMessages.set(data.sender, data.content);
                 numberOfNewMessages = newMessages.size;
