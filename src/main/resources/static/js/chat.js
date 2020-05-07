@@ -26,8 +26,7 @@ function connectToChat(user) {
     let socket = new SockJS(url + '/chat');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        setUserState(1);
-
+        //setUserState(1);
         console.log("connected to: " + frame);
         stompClient.subscribe("/topic/messages/" + user.login, function (response) {
             let data = JSON.parse(response.body);
@@ -56,14 +55,31 @@ function login() {
         currentUser = response;
         console.log(currentUser);
         $('#currentUserName').html('').append('Logined as ' + currentUser.login);
-        connectToChat(currentUser);
+
+        if(!isUserAlreadyOnline(response)){
+            connectToChat(currentUser);
+        }
     });
 
 }
 
+function isUserAlreadyOnline(loginingUser) {
+    $.get(url + "/fetchAllUsers", function (users) {
+
+        usersOnline = users;
+
+        for(let i = 0; i < users.length; i++){
+            if(usersOnline[i].login === loginingUser.login){
+                return true
+            }
+        }
+        return false
+    });
+}
+
 function logout() {
     stompClient.disconnect();
-    setUserState(0);
+    //setUserState(0);
     document.location.href = url + "/login";
 }
 

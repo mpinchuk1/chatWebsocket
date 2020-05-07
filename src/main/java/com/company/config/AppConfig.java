@@ -30,17 +30,12 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
             @Override
             public void run(String... strings) throws Exception {
                 userService.addUser(ADMIN,
-                        encoder.encode("password"),
+                        encoder.encode("!assword"),
                         UserRole.ADMIN, "kek", "77777777");
-                userService.addUser("user",
-                        encoder.encode("password"),
-                        UserRole.USER, "", "");
+//                userService.addUser("user",
+//                        encoder.encode("password"),
+//                        UserRole.USER, "", "");
 
-                for(int i = 0; i < 5; i++){
-                    userService.addUser("user"+i,
-                            encoder.encode("password"),
-                            UserRole.USER, "", "");
-                }
             }
         };
     }
