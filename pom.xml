@@ -90,7 +90,7 @@
 
                 <configuration>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* SpringBootWebSocketApplication</web>
+                        <web>java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar SpringBootWebSocketApplication</web>
                     </processTypes>
                 </configuration>
             </plugin>
