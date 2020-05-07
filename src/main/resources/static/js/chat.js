@@ -26,7 +26,7 @@ function connectToChat(user) {
     let socket = new SockJS(url + '/chat');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        //setUserState(1);
+        setUserState(1);
         console.log("connected to: " + frame);
         stompClient.subscribe("/topic/messages/" + user.login, function (response) {
             let data = JSON.parse(response.body);

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.util.Objects;
+
 @Component
 public class WebSocketEventListener {
 
@@ -26,13 +28,13 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
-        if (username != null) {
-            logger.info("User Connecting:" + username);
-            userService.findByLogin(username).setState(UserState.ONLINE);
-        }
+//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+//
+//        String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("username");
+//        if (username != null) {
+//            logger.info("User Connecting:" + username);
+//            userService.findByLogin(username).setState(UserState.ONLINE);
+//        }
     }
 
     @EventListener
