@@ -1,0 +1,17 @@
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\entities\ChatMessage.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\config\WebsocketConfig.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\entities\UserRole.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\repo\UserService.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\entities\CustomUserDTO.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\listener\WebSocketEventListener.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\security\SecurityConfig.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\security\UserDetailsServiceImpl.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\entities\UserState.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\controller\WebSocketController.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\repo\UserRepository.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\config\AppConfig.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\SpringBootWebSocketApplication.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\security\CustomUserDetails.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\interceptor\HttpHandshakeInterceptor.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\entities\CustomUser.java
+D:\Max\projects\ChatWebsocket\src\main\java\com\company\controller\UserController.java

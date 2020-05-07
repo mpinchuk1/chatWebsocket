@@ -1,4 +1,5 @@
-const url = 'http://localhost:8081';
+//const url = 'http://localhost:8081';
+const url = 'https://serene-journey-31441.herokuapp.com';
 let stompClient;
 let selectedUser;
 let numberOfNewMessages;
@@ -63,7 +64,7 @@ function login() {
 function logout() {
     stompClient.disconnect();
     setUserState(0);
-
+    document.location.href = url + "/login";
 }
 
 function selectUser(userName) {

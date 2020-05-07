@@ -13,6 +13,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"
           type="text/css">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/changes.css" rel="stylesheet">
 </head>
 <body>
 <div class="container clearfix">
@@ -24,19 +25,27 @@
             <a href="#" class="spoiler-trigger"><span>User data</span></a>
             <div class="spoiler-block" id="userData">
                 <div class="update-block">
-                    Phone:<input type="text" id="phoneField" value="" >
-                    Email:<input type="text" id="emailField" value="" >
-                    Your status:
-                    <label>
-                        <input type="radio" name="radioState" id="online-radio" value="1">
-                    </label>Online
-                    <input type="radio" name="radioState" id="away-radio" value="2">Away
-
-                    <button id="saveUserData" >Save</button>
-                    <button id="showUserData">Show user data</button>
+                    <div class="profile-field" name="Phone">
+                        <input type="text" id="phoneField" value="">
+                    </div>
+                    <div class="profile-field" name="Email">
+                        <input type="text" id="emailField" value="">
+                    </div>
+                    <div class="profile-status">
+                        Your status:
+            
+                        <input type="radio" name="radioState" id="online-radio" value="1" hidden>
+                        <label for="online-radio">Online</label>
+            
+                        <input type="radio" name="radioState" id="away-radio" value="2" hidden>
+                        <label for="away-radio">Away</label>
+                    </div>
+                    <div class="bottom-buttons">
+                        <button id="saveUserData"><i class="fa fa-save"></i>Save</button>
+                        <button id="showUserData"><i class="fa fa-info-circle"></i>Show user data</button>
+                    </div>
+                    <button id="logoutButton"><i class="fa fa-sign-out"></i>Logout from Chat</button>
                 </div>
-
-                <button id="logoutButton">Logout from Chat</button>
             </div>
 
         </div>

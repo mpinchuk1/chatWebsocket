@@ -63,7 +63,7 @@ function login() {
 function logout() {
     stompClient.disconnect();
     setUserState(0);
-
+    document.location.href = url + "/login";
 }
 
 function selectUser(userName) {
