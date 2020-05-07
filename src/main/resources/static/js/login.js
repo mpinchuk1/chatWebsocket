@@ -29,7 +29,6 @@ function login() {
             method: "post",
             data: {"j_login":login, "j_password": pass},
             error: function (message) {
-                console.log(message);
                 alert("Wrong password/login")
             },
             success: function () {
