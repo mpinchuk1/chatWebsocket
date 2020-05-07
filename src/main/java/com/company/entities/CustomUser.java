@@ -23,7 +23,7 @@ public class CustomUser {
     @Column
     private String phone;
     @Lob
-    @Column(name = "photo", columnDefinition = "MEDIUMBLOB")
+    //@Column(name = "photo", columnDefinition = "MEDIUMBLOB")
     private byte[] img;
 
     public CustomUser() {
