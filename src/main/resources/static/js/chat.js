@@ -69,8 +69,10 @@ function isUserAlreadyOnline(loginingUser) {
         usersOnline = users;
 
         for(let i = 0; i < users.length; i++){
-            if(usersOnline[i].login === loginingUser.login){
-                return true
+            if(users[i].login === loginingUser.login){
+                if(users[i].state === 'ONLINE'){
+                    return true
+                }
             }
         }
         return false
