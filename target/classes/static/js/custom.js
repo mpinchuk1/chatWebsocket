@@ -67,10 +67,10 @@ function sendMessage(message) {
         };
         sendMsg(username, message);
         if (username !== selectedUser) {
-
+            $chatHistoryList.append(template(context));
         }
 
-        $chatHistoryList.append(template(context));
+
 
         scrollToBottom();
         $textarea.val('');

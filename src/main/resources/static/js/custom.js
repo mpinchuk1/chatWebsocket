@@ -46,7 +46,7 @@ function render(message, userName) {
     setTimeout(function () {
         $chatHistoryList.append(templateResponse(contextResponse));
         scrollToBottom();
-    }.bind(this), 1500);
+    }.bind(this), 1000);
 }
 
 function sendMessage(message) {

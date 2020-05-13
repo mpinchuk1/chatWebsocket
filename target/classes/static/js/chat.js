@@ -58,6 +58,8 @@ function login() {
 
         if(!isUserAlreadyOnline(response)){
             connectToChat(currentUser);
+        }else {
+            alert("Trying to connect again user:" + response.login)
         }
     });
 
