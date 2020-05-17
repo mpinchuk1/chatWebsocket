@@ -1,6 +1,14 @@
 package com.company.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class CustomUser {
@@ -8,23 +16,26 @@ public class CustomUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
     private String login;
-    @Column
     private String password;
-    @Column
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @Column
     @Enumerated(EnumType.STRING)
     private UserState state;
-    @Column
     private String email;
-    @Column
     private String phone;
     @Lob
     //@Column(name = "photo", columnDefinition = "MEDIUMBLOB")
     private byte[] img;
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<ChatMessage> messages = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_room",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
+    @JsonBackReference
+    private List<ChatRoom> rooms = new ArrayList<>();
 
     public CustomUser() {
 
@@ -39,6 +50,16 @@ public class CustomUser {
         this.email = email;
         this.phone = phone;
         //this.img = img;
+    }
+
+    public void addMessage(ChatMessage message){
+        messages.add(message);
+        message.setSender(this);
+    }
+
+    public void addToRoom(ChatRoom room){
+        rooms.add(room);
+        room.getRoomMembers().add(this);
     }
 
     public Long getId() {
@@ -100,4 +121,27 @@ public class CustomUser {
     public void setImg(byte[] img) {
         this.img = img;
     }
+
+    @JsonIgnore
+    public List<ChatMessage> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<ChatMessage> messages) {
+        this.messages = messages;
+    }
+
+    public List<ChatRoom> getRooms() {
+        return rooms;
+    }
+
+    @JsonIgnore
+    public ChatRoom getUserPrivateRoom(){
+        return rooms.get(0);
+    }
+
+    public void setRooms(List<ChatRoom> rooms) {
+        this.rooms = rooms;
+    }
+
 }

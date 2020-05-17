@@ -33,14 +33,14 @@ function cacheDOM() {
     $chatHistoryList = $chatHistory.find('ul');
 }
 
-function render(message, userName) {
+function render(message, roomName) {
     scrollToBottom();
     // responses
     var templateResponse = Handlebars.compile($("#message-response-template").html());
     var contextResponse = {
         response: message,
         time: getCurrentTime(),
-        userName: userName
+        userName: roomName
     };
 
     setTimeout(function () {
@@ -63,10 +63,10 @@ function sendMessage(message) {
         var context = {
             messageOutput: message,
             time: getCurrentTime(),
-            toUserName: selectedUser
+            toUserName: selectedRoomName
         };
         sendMsg(username, message);
-        if (username !== selectedUser) {
+        if (username !== selectedRoomName) {
             $chatHistoryList.append(template(context));
         }
 

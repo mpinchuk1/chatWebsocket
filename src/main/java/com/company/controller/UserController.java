@@ -1,9 +1,7 @@
 package com.company.controller;
 
-import com.company.entities.CustomUser;
-import com.company.entities.CustomUserDTO;
-import com.company.entities.UserRole;
-import com.company.entities.UserState;
+import com.company.entities.*;
+import com.company.repo.RoomService;
 import com.company.repo.UserService;
 import com.company.security.CustomUserDetails;
 import org.slf4j.Logger;
@@ -33,15 +31,23 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
+    private RoomService roomService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/fetchAllUsers")
-    public List<CustomUserDTO> fetchAll() {
+    @GetMapping("/getAllUsers")
+    public List<CustomUserDTO> getAllUsers() {
 
         List<CustomUserDTO> list = new ArrayList<>();
         userService.getAllUsers().forEach(u -> list.add(new CustomUserDTO(u.getId(), u.getLogin(), u.getRole())));
 
         return list;
+    }
+
+    @GetMapping("/fetchAllRooms")
+    public List<ChatRoom> fetchAllRooms() {
+
+        return roomService.getAllRooms();
     }
 
 

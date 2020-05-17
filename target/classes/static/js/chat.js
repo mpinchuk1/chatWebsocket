@@ -1,11 +1,12 @@
-//const url = 'http://localhost:8081';
-const url = 'https://serene-journey-31441.herokuapp.com';
+const url = 'http://localhost:8081';
+//const url = 'https://serene-journey-31441.herokuapp.com';
 let stompClient;
-let selectedUser;
+let selectedRoomName;
 let numberOfNewMessages;
 let currentUser;
 let newMessages = new Map();
 let usersOnline;
+let chatRooms;
 
 if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -17,7 +18,7 @@ if(document.readyState === 'loading'){
 
 
 window.addEventListener('load', (event) => {
-    getAllUsers();
+    getAllRooms();
     showData();
 });
 
@@ -25,27 +26,33 @@ function connectToChat(user) {
     console.log("connecting to chat...")
     let socket = new SockJS(url + '/chat');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({}, function () {
         setUserState(1);
-        console.log("connected to: " + frame);
+        console.log(user)
         stompClient.subscribe("/topic/messages/" + user.login, function (response) {
-            let data = JSON.parse(response.body);
-            if (selectedUser === data.sender) {
-                render(data.content, data.sender);
+            let message = JSON.parse(response.body);
+            //console.log("new message: " + response)
+            if (selectedRoomName === message.sender.login) {
+                render(message.content, message.sender.login);
             } else {
-                newMessages.set(data.sender, data.content);
+                newMessages.set(message.sender.login, message.content);
                 numberOfNewMessages = newMessages.size;
-                $('#userNameAppender_' + data.sender).append('<span id="newMessage_' + data.sender + '" style="color: red">' + numberOfNewMessages + '</span>');
+                $('#userNameAppender_' + message.sender.login).append('<span id="newMessage_' + message.sender.login + '" style="color: red">' + numberOfNewMessages + '</span>');
             }
         });
     });
 }
 
+function onConnect(user) {
+
+}
+
 function sendMsg(from, text) {
-    if (selectedUser !== undefined) {
-        stompClient.send("/app/chat/" + selectedUser, {}, JSON.stringify({
+    if (selectedRoomName !== undefined) {
+
+        stompClient.send("/app/chat/" + selectedRoomName, {}, JSON.stringify({
             sender: from,
-            content: text
+            content: text,
         }));
     }
 }
@@ -66,7 +73,7 @@ function login() {
 }
 
 function isUserAlreadyOnline(loginingUser) {
-    $.get(url + "/fetchAllUsers", function (users) {
+    $.get(url + "/getAllUsers", function (users) {
 
         usersOnline = users;
 
@@ -87,32 +94,27 @@ function logout() {
     document.location.href = url + "/login";
 }
 
-function selectUser(userName) {
-    console.log("selecting users: " + userName);
-    selectedUser = userName;
-    let isNew = document.getElementById("newMessage_" + userName) !== null;
-    if (isNew) {
-        let element = document.getElementById("newMessage_" + userName);
-        element.parentNode.removeChild(element);
-        numberOfNewMessages = 0;
-        render(newMessages.get(userName), userName);
-    }
-    $('#selectedUserId').html('').append('Chat with ' + userName);
-}
 
-function fetchAll(users) {
+
+function fetchAll(rooms) {
     let usersTemplateHTML = "";
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < rooms.length; i++) {
         let stateString;
-        if (users[i].state === 'ONLINE') {
-            stateString = '<i class="fa fa-circle online"></i>\n';
-        } else {
+        let roomName = rooms[i].name;
+        // let tempRoom = {
+        //     id: rooms[i].id,
+        //     name: rooms[i].name,
+        //     owner: rooms[i].owner
+        // }
+        // if (tempRoom.owner.state === 'ONLINE') {
+        //     stateString = '<i class="fa fa-circle online"></i>\n';
+        // } else {
             stateString = '<i class="fa fa-circle offline"></i>\n';
-        }
-        usersTemplateHTML = usersTemplateHTML + '<a href="#" onclick="selectUser(\'' + users[i].login + '\')"><li class="clearfix">\n' +
+       // }
+        usersTemplateHTML = usersTemplateHTML + '<a href="#" onclick="selectUser(\''+roomName+'\')"><li class="clearfix">\n' +
             '                <img src="https://rtfm.co.ua/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png" width="55px" height="55px" alt="avatar" />\n' +
             '                <div class="about">\n' +
-            '                    <div id="userNameAppender_' + users[i].login + '" class="name">' + users[i].login + '</div>\n' +
+            '                    <div id="userNameAppender_' + roomName + '" class="name">' + roomName + '</div>\n' +
             '                    <div class="status">\n' + stateString +
             '                    </div>\n' +
             '                </div>\n' +
@@ -121,12 +123,27 @@ function fetchAll(users) {
     $('#usersList').html(usersTemplateHTML);
 }
 
-function getAllUsers() {
-    $.get(url + "/fetchAllUsers", function (users) {
 
-        usersOnline = users;
-        fetchAll(users);
-        //console.log(usersOnline)
+function selectUser(roomName) {
+
+    console.log("selecting room: " + roomName);
+    selectedRoomName = roomName;
+    let isNew = document.getElementById("newMessage_" + roomName) !== null;
+    if (isNew) {
+        let element = document.getElementById("newMessage_" + roomName);
+        element.parentNode.removeChild(element);
+        numberOfNewMessages = 0;
+        render(newMessages.get(roomName), roomName);
+    }
+    $('#selectedUserId').html('').append('Chat with ' + roomName);
+}
+
+function getAllRooms() {
+    $.get(url + "/fetchAllRooms", function (rooms) {
+
+        chatRooms = rooms;
+        fetchAll(rooms);
+        console.log(chatRooms)
     });
 }
 
