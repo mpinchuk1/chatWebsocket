@@ -1,5 +1,5 @@
-const url = 'http://localhost:8081';
-//const url = 'https://serene-journey-31441.herokuapp.com';
+//const url = 'http://localhost:8081';
+const url = 'https://serene-journey-31441.herokuapp.com';
 let $loginButton;
 let $registerButton;
 
@@ -63,7 +63,7 @@ function register() {
 
 function validate(login, pass) {
 
-    if (login === "" || pass === "") {
+    if (login.trim() === "" || pass === "") {
         alert("Username and password are required");
         return false;
     }

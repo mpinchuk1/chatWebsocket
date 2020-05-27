@@ -1,11 +1,9 @@
 package com.company.repo;
 
 import com.company.config.AppConfig;
-import com.company.entities.ChatRoom;
 import com.company.entities.CustomUser;
-import com.company.entities.UserRole;
-import com.company.entities.UserState;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.company.utils.UserRole;
+import com.company.utils.UserState;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +14,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RoomRepository roomRepository;
+    private final RoomService roomService;
 
-    public UserService(UserRepository userRepository, RoomRepository roomRepository) {
+    public UserService(UserRepository userRepository, RoomService roomService) {
         this.userRepository = userRepository;
-        this.roomRepository = roomRepository;
+        this.roomService = roomService;
     }
 
     @Transactional(readOnly = true)
@@ -76,12 +74,10 @@ public class UserService {
                            String email, String phone) {
         if (userRepository.existsByLogin(login))
             return false;
-        ChatRoom userRoom = new ChatRoom(login);
+
         CustomUser user = new CustomUser(login, passHash, role, email, phone);
-        userRoom.setOwner(user);
-        userRoom.addUserToRoom(user);
+        roomService.findAll().forEach(chatRoom -> chatRoom.addUserToRoom(user));
         userRepository.save(user);
-        roomRepository.save(userRoom);
         return true;
     }
 

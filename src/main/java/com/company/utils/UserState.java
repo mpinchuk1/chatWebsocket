@@ -1,4 +1,4 @@
-package com.company.entities;
+package com.company.utils;
 
 public enum UserState {
     OFFLINE, ONLINE, AWAY;

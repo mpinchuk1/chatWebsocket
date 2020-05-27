@@ -1,14 +1,13 @@
 package com.company.entities;
 
+import com.company.utils.UserRole;
+import com.company.utils.UserState;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class CustomUser {
@@ -52,15 +51,6 @@ public class CustomUser {
         //this.img = img;
     }
 
-    public void addMessage(ChatMessage message){
-        messages.add(message);
-        message.setSender(this);
-    }
-
-    public void addToRoom(ChatRoom room){
-        rooms.add(room);
-        room.getRoomMembers().add(this);
-    }
 
     public Long getId() {
         return id;
@@ -144,4 +134,11 @@ public class CustomUser {
         this.rooms = rooms;
     }
 
+    @Override
+    public String toString() {
+        return "CustomUser{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
+    }
 }

@@ -40,6 +40,14 @@
             <div class="your_login" id="currentUserName">
 
             </div>
+            <button id="addRoomButtonModal" >Create new room</button>
+            <div class="overlay js-overlay-campaign">
+                <div class="popup js-popup-campaign">
+                    <input type="text" id="newRoomName" value="">
+                    <button id="addNewRoom">Create room</button>
+                    <div class="close-popup js-close-campaign"></div>
+                </div>
+            </div>
             <a href="#" class="spoiler-trigger"><span>User data</span></a>
             <div class="spoiler-block" id="userData">
                 <div class="update-block">
@@ -84,10 +92,14 @@
                 <div class="chat-with" id="selectedUserId"></div>
                 <div class="chat-num-messages"></div>
             </div>
+<!--            <div class="roomAccessButtons" >-->
+<!--                <button id="joinRoomButton">Join to room(test)</button>-->
+<!--                <button id="leaveFromRoomButton">Leave from room(test)</button>-->
+<!--            </div>-->
             <i class="fa fa-star"></i>
         </div> <!-- end chat-header -->
 
-        <div class="chat-history">
+        <div class="chat-history" id="chat-hist">
             <ul>
 
             </ul>
@@ -111,7 +123,7 @@
 <script id="message-template" type="text/x-handlebars-template">
     <li class="clearfix">
         <div class="message-data align-right">
-            <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
+            <span class="message-data-time">{{time}}    </span> &nbsp; &nbsp;
             <span class="message-data-name">You</span> <i class="fa fa-circle me"></i>
         </div>
         <div class="message other-message float-right">
@@ -124,7 +136,7 @@
     <li>
         <div class="message-data">
             <span class="message-data-name"><i class="fa fa-circle online"></i> {{userName}}</span>
-            <span class="message-data-time">{{time}}, Today</span>
+            <span class="message-data-time">{{time}}    </span>
         </div>
         <div class="message my-message">
             <span>{{response}}</span>

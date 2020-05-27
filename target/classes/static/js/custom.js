@@ -1,8 +1,8 @@
 let $chatHistory;
 let $button;
-//let $loginButton;
 let $showUserDataButton;
 let $saveUserDataButton;
+let $createNewRoomButton;
 let $logoutButton;
 let $textarea;
 let $chatHistoryList;
@@ -15,38 +15,49 @@ function init() {
 
 function bindEvents() {
     $button.on('click', addMessage.bind(this));
-    //$loginButton.on('click', loginUser.bind(this));
     $logoutButton.on('click', logoutUser.bind(this));
     $textarea.on('keyup', addMessageEnter.bind(this));
     $showUserDataButton.on('click', showUserData.bind(this));
     $saveUserDataButton.on('click', saveUserData.bind(this));
+    $createNewRoomButton.on('click', createNewRoom.bind(this))
 }
 
 function cacheDOM() {
     $chatHistory = $('.chat-history');
     $button = $('#sendBtn');
-    //$loginButton = $('#loginButton');
     $logoutButton = $('#logoutButton');
     $showUserDataButton = $('#showUserData');
     $saveUserDataButton = $('#saveUserData');
     $textarea = $('#message-to-send');
     $chatHistoryList = $chatHistory.find('ul');
+    $createNewRoomButton = $('#addNewRoom');
 }
 
-function render(message, roomName) {
+function render(message, roomName, date) {
     scrollToBottom();
     // responses
-    var templateResponse = Handlebars.compile($("#message-response-template").html());
-    var contextResponse = {
-        response: message,
-        time: getCurrentTime(),
-        userName: roomName
-    };
+    let templateResponse;
+    let contextResponse;
+    if(roomName === currentUser.login){
+        templateResponse = Handlebars.compile($("#message-template").html());
+        contextResponse = {
+            messageOutput: message,
+            time: date
+        };
+    }else {
+        templateResponse = Handlebars.compile($("#message-response-template").html());
+        contextResponse = {
+            response: message,
+            time: date,
+            userName: roomName
+        };
+    }
+
 
     setTimeout(function () {
         $chatHistoryList.append(templateResponse(contextResponse));
         scrollToBottom();
-    }.bind(this), 1000);
+    }.bind(this), 1);
 }
 
 function sendMessage(message) {
@@ -65,7 +76,7 @@ function sendMessage(message) {
             time: getCurrentTime(),
             toUserName: selectedRoomName
         };
-        sendMsg(username, message);
+        sendMsg(username, message, getCurrentTime());
         if (username !== selectedRoomName) {
             $chatHistoryList.append(template(context));
         }
@@ -83,7 +94,10 @@ function scrollToBottom() {
 }
 
 function getCurrentTime() {
-    return new Date().toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes();
+    return date + ' ' + time;
 }
 
 function addMessage() {
@@ -105,10 +119,6 @@ function saveUserData() {
     saveData();
 }
 
-function loginUser() {
-    login();
-}
-
 function logoutUser() {
     logout();
 
@@ -118,6 +128,40 @@ $(document).on('click', '.spoiler-trigger', function (e) {
     e.preventDefault();
     $(this).toggleClass('active');
     $(this).parent().find('.spoiler-block').first().slideToggle(300);
-})
+});
+
+function createNewRoom() {
+    createRoom();
+}
+
 
 init();
+
+//Modal window
+// открыть по кнопке
+$('#addRoomButtonModal').click(function() {
+    $('.js-overlay-campaign').fadeIn().addClass('disabled');
+});
+
+// закрыть на крестик
+$('.js-close-campaign').click(function() {
+    $('.js-overlay-campaign').fadeOut();
+
+});
+
+// закрыть по клику вне окна
+$(document).mouseup(function (e) {
+    var popup = $('.js-popup-campaign');
+    if (e.target!=popup[0]&&popup.has(e.target).length === 0){
+        $('.js-overlay-campaign').fadeOut();
+
+    }
+});
+
+function adminButtonShow() {
+    if(currentUser.login === 'admin'){
+        $('#addRoomButtonModal').show()
+    }else {
+        $('#addRoomButtonModal').hide()
+    }
+}

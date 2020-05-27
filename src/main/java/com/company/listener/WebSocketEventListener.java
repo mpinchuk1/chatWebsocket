@@ -1,7 +1,7 @@
 package com.company.listener;
 
-import com.company.entities.ChatMessage;
-import com.company.entities.UserState;
+import com.company.utils.ChatMessageDTO;
+import com.company.utils.UserState;
 import com.company.repo.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.Objects;
-
 @Component
 public class WebSocketEventListener {
 
+    private static final String JOINMESSAGE = "JOIN";
+    private static final String LEAVEMESSAGE = "LEAVE";
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
     @Autowired
@@ -28,13 +28,9 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-//
-//        String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("username");
-//        if (username != null) {
-//            logger.info("User Connecting:" + username);
-//            userService.findByLogin(username).setState(UserState.ONLINE);
-//        }
+        ChatMessageDTO joinMessage = new ChatMessageDTO("server", JOINMESSAGE);
+        messagingTemplate.convertAndSend("/topic/roomOnlineListener", joinMessage);
+
     }
 
     @EventListener
@@ -45,11 +41,8 @@ public class WebSocketEventListener {
         if (username != null) {
             logger.info("User Disconnected : " + username);
             userService.findByLogin(username).setState(UserState.OFFLINE);
-//           ChatMessage chatMessage = new ChatMessage();
-//           chatMessage.setType(ChatMessage.MessageType.LEAVE);
-//          chatMessage.setSender(username);
-
-            //messagingTemplate.convertAndSend("/topic/publicChatRoom", chatMessage);
+            ChatMessageDTO leaveMessage = new ChatMessageDTO("server", LEAVEMESSAGE);
+            messagingTemplate.convertAndSend("/topic/roomOnlineListener", leaveMessage);
         }
     }
 

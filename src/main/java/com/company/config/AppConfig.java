@@ -1,9 +1,6 @@
 package com.company.config;
 
-import com.company.entities.ChatRoom;
-import com.company.entities.CustomUser;
-import com.company.entities.UserRole;
-import com.company.repo.RoomRepository;
+import com.company.utils.UserRole;
 import com.company.repo.RoomService;
 import com.company.repo.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -29,7 +25,7 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     public CommandLineRunner demo(final UserService userService,
-                                  final RoomRepository roomRepository,
+                                  final RoomService roomService,
                                   final PasswordEncoder encoder) {
         return new CommandLineRunner() {
             @Override
@@ -40,11 +36,8 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
                 userService.addUser("user",
                         encoder.encode("password"),
                         UserRole.USER, "", "");
-//                ChatRoom test = new ChatRoom("PublicTestRoom");
-//                test.setOwner(userService.findByLogin(ADMIN));
-//                test.addUserToRoom(userService.findByLogin(ADMIN));
-//                test.addUserToRoom(userService.findByLogin("user"));
-//                roomRepository.save(test);
+                roomService.addRoom(ADMIN, ADMIN, true);
+                roomService.addRoom("user", "user", true);
             }
         };
     }

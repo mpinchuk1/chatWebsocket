@@ -4,16 +4,16 @@ import com.company.entities.*;
 import com.company.repo.RoomService;
 import com.company.repo.UserService;
 import com.company.security.CustomUserDetails;
+import com.company.utils.CustomUserDTO;
+import com.company.utils.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,12 +44,6 @@ public class UserController {
         return list;
     }
 
-    @GetMapping("/fetchAllRooms")
-    public List<ChatRoom> fetchAllRooms() {
-
-        return roomService.getAllRooms();
-    }
-
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Void> update(@RequestParam(required = false) String email,
@@ -75,7 +69,7 @@ public class UserController {
         String passHash = passwordEncoder.encode(password);
 
         if (userService.addUser(login, passHash, UserRole.USER, email, phone)) {
-
+            roomService.addRoom(login, login, true);
             return ResponseEntity.ok().build();
 
         }
@@ -123,14 +117,14 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping("/admin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // !!!
-    public ModelAndView admin(Model model) {
-        //model.addAttribute("users", userService.getAllUsers());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin");
-        return modelAndView;
-    }
+//    @RequestMapping("/admin")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')") // !!!
+//    public ModelAndView admin(Model model) {
+//        //model.addAttribute("users", userService.getAllUsers());
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("admin");
+//        return modelAndView;
+//    }
 
     @RequestMapping("/unauthorized")
     public ModelAndView unauthorized(Model model){

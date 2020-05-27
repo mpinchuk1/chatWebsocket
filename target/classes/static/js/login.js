@@ -63,7 +63,7 @@ function register() {
 
 function validate(login, pass) {
 
-    if (login === "" || pass === "") {
+    if (login.trim() === "" || pass === "") {
         alert("Username and password are required");
         return false;
     }

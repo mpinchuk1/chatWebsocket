@@ -1,9 +1,13 @@
 package com.company.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.dialect.CUBRIDDialect;
 import org.hibernate.loader.custom.CustomQuery;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -17,9 +21,11 @@ public class ChatMessage {
     private CustomUser sender;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "toRoom_id", nullable = false)
+    @JsonManagedReference
     private ChatRoom to;
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Kiev")
     private Date date;
 
     public ChatMessage() {
@@ -60,5 +66,22 @@ public class ChatMessage {
         this.to = to;
     }
 
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "id=" + id +
+                ", sender=" + sender +
+                ", to=" + to +
+                ", content='" + content + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

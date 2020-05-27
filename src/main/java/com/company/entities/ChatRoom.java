@@ -24,12 +24,17 @@ public class ChatRoom {
     @ManyToMany(mappedBy = "rooms")
     @JsonIgnore
     private List<CustomUser> roomMembers = new ArrayList<>();
+    @OneToMany(mappedBy = "to", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
+    private List<ChatMessage> roomMessages = new ArrayList<>();
+    private Boolean isSingleUserRoom;
 
     public ChatRoom() {
     }
 
     public ChatRoom(String name) {
         this.name = name;
+        this.isSingleUserRoom = false;
     }
 
     public void addUserToRoom(CustomUser user){
@@ -40,6 +45,11 @@ public class ChatRoom {
     public void deleteUserFromRoom(CustomUser delUser){
         roomMembers.remove(delUser);
         delUser.getRooms().remove(this);
+    }
+
+    public void addMessage(ChatMessage message){
+        roomMessages.add(message);
+        message.setTo(this);
     }
 
     public CustomUser getOwner(){
@@ -70,4 +80,28 @@ public class ChatRoom {
         this.roomMembers = roomMembers;
     }
 
+    public List<ChatMessage> getRoomMessages() {
+        return roomMessages;
+    }
+
+    public void setRoomMessages(List<ChatMessage> roomMessages) {
+        this.roomMessages = roomMessages;
+    }
+
+    public Boolean isSingleUserRoom() {
+        return isSingleUserRoom;
+    }
+
+    public void setIsSingleUserRoom(Boolean flag) {
+        isSingleUserRoom = flag;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatRoom{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

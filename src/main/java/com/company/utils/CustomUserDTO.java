@@ -1,9 +1,4 @@
-package com.company.entities;
-
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Lob;
+package com.company.utils;
 
 public class CustomUserDTO {
 
