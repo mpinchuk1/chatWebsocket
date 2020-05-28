@@ -1,5 +1,5 @@
-//const url = 'http://localhost:8081';
-const url = 'https://serene-journey-31441.herokuapp.com';
+const url = 'http://localhost:8081';
+//const url = 'https://serene-journey-31441.herokuapp.com';
 let stompClient;
 let selectedRoomName;
 let numberOfNewMessages;
@@ -21,6 +21,7 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', (event) => {
     getAllRooms();
     showData();
+    allRoomsMessages.clear();
 });
 
 function connectToChat(user) {
