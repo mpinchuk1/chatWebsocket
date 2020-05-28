@@ -51,15 +51,18 @@ public class ChatMessageController {
     }
 
     @RequestMapping(value = "/getRoomMessages")
-    public synchronized List<ChatMessage> getSingleRoomMessages(@RequestParam String userFrom, @RequestParam String userTo){
+    public List<ChatMessage> getSingleRoomMessages(@RequestParam String userFrom, @RequestParam String userTo){
         ChatRoom room = roomService.findByName(userTo);
         List<ChatMessage> theirMessages;
 
         if(room.isSingleUserRoom()){
             CustomUser user1 = userService.findByLogin(userFrom);
             CustomUser user2 = userService.findByLogin(userTo);
+            System.out.println(user1.getRooms());
+            System.out.println(user1 + " " + user2);
             ChatRoom userRoom1 = user1.getUserPrivateRoom();
             ChatRoom userRoom2 = user2.getUserPrivateRoom();
+            System.out.println(userRoom1 + " " + userRoom2);
             List<ChatMessage> user1Messages = userRoom1.getRoomMessages();      //all messages to user1 private room
             user1Messages = user1Messages.stream().filter(message -> message.getSender().equals(user2)).collect(Collectors.toList());
             List<ChatMessage> user2Messages = userRoom2.getRoomMessages();
@@ -67,6 +70,7 @@ public class ChatMessageController {
             theirMessages = user1Messages;
             theirMessages.addAll(user2Messages);
             theirMessages.sort(Comparator.comparing(ChatMessage::getDate));
+
         }else {
             theirMessages = room.getRoomMessages();
         }

@@ -41,8 +41,6 @@ function onPrivateMessage(response) {
     if (selectedRoomName === message.sender.login) {
         render(message.content, message.sender.login, message.date);
     } else {
-        //newMessages.set(message.sender.login, message.content);
-        //numberOfNewMessages = newMessages.size;
         $('#userNameAppender_' + message.sender.login).append('<span id="newMessage_' + message.sender.login + '" style="color: red">' + "!" + '</span>');
     }
     let tempMessage = {

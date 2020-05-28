@@ -38,13 +38,13 @@ function render(message, roomName, date) {
     // responses
     let templateResponse;
     let contextResponse;
-    if(roomName === currentUser.login){
+    if(roomName === currentUser.login){                        //to show message, if it came from server. Sender is you
         templateResponse = Handlebars.compile($("#message-template").html());
         contextResponse = {
             messageOutput: message,
             time: date
         };
-    }else {
+    }else {                                                   //to show message, if it came from server. Sender is NOT you
         templateResponse = Handlebars.compile($("#message-response-template").html());
         contextResponse = {
             response: message,
@@ -72,12 +72,12 @@ function sendMessage(message) {
     if (message.trim() !== '') {
         var template = Handlebars.compile($("#message-template").html());
         var context = {
-            messageOutput: message,
+            messageOutput: message.trim(),
             time: getCurrentTime(),
             toUserName: selectedRoomName
         };
         sendMsg(username, message, getCurrentTime());
-        if (username !== selectedRoomName) {
+        if (username !== selectedRoomName) {                    //to show message, if you sent it
             $chatHistoryList.append(template(context));
         }
 

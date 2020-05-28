@@ -33,8 +33,11 @@ public class RoomService {
         CustomUser owner = userRepository.findByLogin(ownerName);
         newRoom.setOwner(owner);
 
-        userRepository.findAll().forEach(newRoom::addUserToRoom);
-        //newRoom.addUserToRoom(owner);
+        if(!isSingleUserRoom){
+            userRepository.findAll().forEach(newRoom::addUserToRoom);
+        }else {
+            newRoom.addUserToRoom(owner);
+        }
 
         newRoom.setIsSingleUserRoom(isSingleUserRoom);
         roomRepository.save(newRoom);

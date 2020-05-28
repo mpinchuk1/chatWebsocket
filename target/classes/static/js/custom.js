@@ -72,14 +72,14 @@ function sendMessage(message) {
     if (message.trim() !== '') {
         var template = Handlebars.compile($("#message-template").html());
         var context = {
-            messageOutput: message,
+            messageOutput: message.trim(),
             time: getCurrentTime(),
             toUserName: selectedRoomName
         };
         sendMsg(username, message, getCurrentTime());
-        if (username !== selectedRoomName) {
-            $chatHistoryList.append(template(context));
-        }
+        //if (username !== selectedRoomName) {                    //////////////////need fix?
+            //$chatHistoryList.append(template(context));
+        //}
 
 
 

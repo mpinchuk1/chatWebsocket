@@ -76,7 +76,11 @@ public class UserService {
             return false;
 
         CustomUser user = new CustomUser(login, passHash, role, email, phone);
-        roomService.findAll().forEach(chatRoom -> chatRoom.addUserToRoom(user));
+        roomService.findAll().forEach(chatRoom -> {
+            if(!chatRoom.isSingleUserRoom()){
+                chatRoom.addUserToRoom(user);
+            }
+        });
         userRepository.save(user);
         return true;
     }

@@ -29,14 +29,18 @@ function login() {
             method: "post",
             data: {"j_login":login, "j_password": pass},
             error: function (message) {
+                console.log(message)
                 alert("Wrong password/login")
             },
             success: function () {
                 document.location.href = url;
             }
         });
+
     }
 }
+
+
 
 function register() {
     let regLogin = document.getElementById("regLogin").value;
@@ -50,7 +54,7 @@ function register() {
             data: {"login":regLogin, "password": regPass, "email": regEmail, "phone": regPhone},
             error: function (message) {
                 console.log(message);
-                alert("User with login " + regLogin + "already exists!")
+                alert("User with login " + regLogin + " already exists!")
             },
             success: function () {
                 alert("You successfully registered!")
